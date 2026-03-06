@@ -165,9 +165,9 @@ if not os.path.exists('data/amazon_beauty/train.txt'):
     tra_ids, tra_dates, tra_seqs = obtain_tra()
     tes_ids, tes_dates, tes_seqs = obtain_tes()
 
-    os.makedirs('data/amazon_beauty', exist_ok=True)
+    os.makedirs('dataset/amazon_beauty', exist_ok=True)
     id2asin = {v: k for k, v in item_dict.items()}
-    with open('data/amazon_beauty/id2asin.json', 'w') as f:
+    with open('dataset/amazon_beauty/id2asin.json', 'w') as f:
         json.dump(id2asin, f)
 
     def process_seqs(iseqs, idates):
@@ -187,11 +187,11 @@ if not os.path.exists('data/amazon_beauty/train.txt'):
     tra = (tr_seqs, tr_labs)
     tes = (te_seqs, te_labs)
 
-    pickle.dump(tra, open('data/amazon_beauty/train.txt', 'wb'))
-    pickle.dump(tes, open('data/amazon_beauty/test.txt', 'wb'))
-    pickle.dump(tra_seqs, open('data/amazon_beauty/all_train_seq.txt', 'wb'))
+    pickle.dump(tra, open('dataset/amazon_beauty/train.txt', 'wb'))
+    pickle.dump(tes, open('dataset/amazon_beauty/test.txt', 'wb'))
+    pickle.dump(tra_seqs, open('dataset/amazon_beauty/all_train_seq.txt', 'wb'))
     vocab_size = item_ctr
-    pickle.dump(vocab_size, open('data/amazon_beauty/vocab_size.pkl', 'wb'))
+    pickle.dump(vocab_size, open('dataset/amazon_beauty/vocab_size.pkl', 'wb'))
     print(f'Done processing data. Total unique items mapped: {item_ctr - 1}')
 
 # ==========================================
@@ -257,20 +257,20 @@ def train_test(model, train_data, test_data):
     return hit, mrr
 
 def main():
-    train_data = pickle.load(open('data/amazon_beauty/train.txt', 'rb'))         
+    train_data = pickle.load(open('dataset/amazon_beauty/train.txt', 'rb'))         
     if opt.validation:
         train_data, valid_data = split_validation(train_data, opt.valid_portion)
         test_data = valid_data
     else:
-        test_data = pickle.load(open('data/amazon_beauty/test.txt', 'rb'))
+        test_data = pickle.load(open('dataset/amazon_beauty/test.txt', 'rb'))
         
     train_data = Data(train_data, shuffle=True)
     test_data = Data(test_data, shuffle=False)
     
-    n_node = pickle.load(open('data/amazon_beauty/vocab_size.pkl', 'rb'))
+    n_node = pickle.load(open('dataset/amazon_beauty/vocab_size.pkl', 'rb'))
     print(f"Loaded vocab size (n_node): {n_node}")
 
-    feature_matrix_path = 'data/amazon_beauty/item_image_features.pt'
+    feature_matrix_path = 'dataset/amazon_beauty/item_image_features.pt'
     if not os.path.exists(feature_matrix_path):
         print("\n[WARNING] Could not find extracted images. Please run model/vit_encoder.py first!")
         print("Exiting...")
