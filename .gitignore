@@ -1,0 +1,8 @@
+env/
+venv/
+bin/
+lib/
+include/
+*.gz
+*.dylib
+.DS_Store

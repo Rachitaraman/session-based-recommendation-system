@@ -1,0 +1,15 @@
+# Ignore the massive Amazon dataset files
+*.jsonl
+*.jsonl.gz
+
+# Ignore the generated data folder (keeps the repo lightweight, your teammates can generate this themselves)
+data/amazon_beauty/
+
+# Ignore virtual environments and cache
+env/
+__pycache__/
+*.pyc
+.DS_Store
+env/
+venv/
+*.gz
